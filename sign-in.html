@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In | Origami</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="logo" href="index.html">
+    <svg class="logo-mark" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+      <path d="M12 2 L21 14 L12 22 L3 14 Z" fill="#ec4899"/>
+      <path d="M12 2 L21 14 L12 14 Z" fill="#f472b6"/>
+    </svg>
+    <span>Origami</span>
+  </a>
+  <div class="header-actions">
+    <a class="btn btn-black" href="#">Start Free <span aria-hidden="true">&rarr;</span></a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobileNav" hidden>
+  <div class="mobile-nav-header">
+    <a class="logo" href="index.html">
+      <svg class="logo-mark" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+        <path d="M12 2 L21 14 L12 22 L3 14 Z" fill="#ec4899"/>
+        <path d="M12 2 L21 14 L12 14 Z" fill="#f472b6"/>
+      </svg>
+      <span>Origami</span>
+    </a>
+    <a class="btn btn-black" href="#">Start Free <span aria-hidden="true">&rarr;</span></a>
+    <button class="menu-toggle" id="menuClose" aria-label="Close menu">&times;</button>
+  </div>
+
+  <p class="nav-section-label">Product</p>
+  <ul class="nav-list">
+    <li><a href="lead-generation.html">Lead Generation</a></li>
+    <li><a href="#">Data Enrichment</a></li>
+    <li><a href="web-scraping.html">Web Scraping</a></li>
+    <li><a href="#">Send <span class="badge badge-pink">NEW</span></a></li>
+  </ul>
+
+  <ul class="nav-list nav-list-plain">
+    <li><a href="verticals.html">Verticals</a></li>
+    <li><a href="#">API Docs <span class="badge badge-blue">Beta</span></a></li>
+    <li><a href="#">Partners</a></li>
+    <li><a href="#">Guide</a></li>
+    <li><a href="#">Book a Demo</a></li>
+  </ul>
+
+  <div class="mobile-nav-cta">
+    <a class="btn btn-outline" href="sign-in.html">Sign In</a>
+    <a class="btn btn-black btn-block" href="#">Start Free</a>
+  </div>
+</nav>
+
+<main>
+  <div class="auth-wrap">
+    <form class="auth-card" onsubmit="return false;">
+      <h1>Sign in to Origami</h1>
+      <p class="auth-sub">Welcome back.</p>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="you@company.com" autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" autocomplete="current-password">
+      </div>
+      <a class="auth-forgot" href="#">Forgot password?</a>
+
+      <button class="btn btn-black btn-block" type="submit">Sign In</button>
+      <p class="auth-divider">New here? <a href="#">Start Free</a></p>
+    </form>
+  </div>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

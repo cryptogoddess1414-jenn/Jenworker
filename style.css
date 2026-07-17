@@ -367,3 +367,134 @@ a { color: inherit; text-decoration: none; }
   .vertical-list li { flex: 1 1 calc(33% - 12px); }
   .waterfalls { flex-direction: row; }
 }
+
+/* Product pages (Lead Generation / Web Scraping) */
+.page-hero {
+  padding: 56px 20px 48px;
+  text-align: center;
+  background: var(--gray-bg);
+}
+.page-hero .eyebrow {
+  display: inline-block;
+  background: var(--pink-light);
+  color: var(--pink);
+  font-weight: 700;
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  margin-bottom: 20px;
+}
+.page-hero h1 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 42px;
+  line-height: 1.2;
+  margin: 0 0 20px;
+}
+.page-hero p {
+  max-width: 560px;
+  margin: 0 auto 28px;
+  color: var(--gray-text);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.feature-list {
+  list-style: none;
+  margin: 0 auto;
+  padding: 40px 20px 64px;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.feature-list li {
+  display: flex;
+  gap: 14px;
+  border: 1px solid var(--gray-border);
+  border-radius: 14px;
+  padding: 18px 20px;
+}
+.feature-list .feature-icon {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--pink-light);
+  color: var(--pink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+.feature-list h3 { margin: 0 0 4px; font-size: 16px; }
+.feature-list p { margin: 0; color: var(--gray-text); font-size: 14px; line-height: 1.5; }
+
+.page-cta {
+  text-align: center;
+  padding: 0 20px 64px;
+}
+
+/* Verticals page */
+.verticals-page .page-hero { padding-bottom: 0; }
+
+/* Sign in */
+.auth-wrap {
+  min-height: calc(100vh - 65px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: var(--gray-bg);
+}
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  border: 1px solid var(--gray-border);
+  border-radius: 20px;
+  padding: 32px 28px;
+}
+.auth-card h1 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 28px;
+  margin: 0 0 6px;
+  text-align: center;
+}
+.auth-card .auth-sub {
+  text-align: center;
+  color: var(--gray-text);
+  font-size: 14px;
+  margin: 0 0 28px;
+}
+.field { margin-bottom: 16px; }
+.field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.field input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--gray-border);
+  border-radius: 10px;
+  font-size: 15px;
+  font-family: var(--sans);
+}
+.field input:focus { outline: 2px solid var(--pink); outline-offset: 1px; }
+.auth-forgot {
+  display: block;
+  text-align: right;
+  font-size: 13px;
+  color: var(--gray-text);
+  margin: -8px 0 20px;
+}
+.auth-divider {
+  text-align: center;
+  color: var(--gray-text);
+  font-size: 14px;
+  margin-top: 20px;
+}
+.auth-divider a { color: var(--pink); font-weight: 600; }
