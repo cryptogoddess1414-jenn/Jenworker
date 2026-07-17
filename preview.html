@@ -1,0 +1,969 @@
+<title>Origami clone &mdash; live preview</title>
+<style>
+:root {
+  --pink: #ec4899;
+  --pink-light: #fce7f3;
+  --ink: #18181b;
+  --gray-bg: #f6f5f3;
+  --gray-border: #e5e3df;
+  --gray-text: #52525b;
+  --serif: Georgia, 'Times New Roman', serif;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  font-family: var(--sans);
+  color: var(--ink);
+  background: #fff;
+  color-scheme: light;
+}
+
+a { color: inherit; text-decoration: none; }
+a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--pink); outline-offset: 2px; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 15px;
+  white-space: nowrap;
+  border: none;
+  cursor: pointer;
+  font-family: var(--sans);
+}
+.btn-black { background: var(--ink); color: #fff; }
+.btn-outline { border: 1px solid var(--gray-border); color: var(--ink); justify-content: center; background: #fff; }
+.btn-block { justify-content: center; width: 100%; }
+
+.badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 999px;
+  letter-spacing: .02em;
+}
+.badge-pink { background: var(--pink-light); color: var(--pink); }
+.badge-blue { background: #e0e7ff; color: #4338ca; }
+
+/* Header */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--gray-border);
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 20;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 600;
+}
+.header-actions { display: flex; align-items: center; gap: 14px; }
+.menu-toggle {
+  background: none;
+  border: none;
+  width: 32px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 0;
+}
+.menu-toggle span {
+  display: block;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 2px;
+}
+#menuClose {
+  font-size: 28px;
+  line-height: 1;
+  height: auto;
+  color: var(--ink);
+  background: none;
+}
+
+/* Mobile nav overlay */
+.mobile-nav {
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  z-index: 30;
+  overflow-y: auto;
+  padding: 0 20px 32px;
+}
+.mobile-nav[hidden] { display: none; }
+.mobile-nav-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--gray-border);
+  margin-bottom: 8px;
+}
+.mobile-nav-header .btn { order: 2; }
+.nav-section-label {
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: 12px;
+  color: #9ca3af;
+  margin: 24px 0 8px;
+}
+.nav-list { list-style: none; margin: 0; padding: 0; }
+.nav-list li { border-bottom: 1px solid var(--gray-border); }
+.nav-list a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 0;
+  font-size: 19px;
+  color: var(--ink);
+}
+.nav-list-plain { margin-top: 8px; }
+.mobile-nav-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+/* Hero */
+.hero {
+  padding: 56px 20px 40px;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 100%, rgba(0,0,0,.03), transparent 60%),
+    var(--gray-bg);
+}
+.hero h1 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 48px;
+  line-height: 1.15;
+  margin: 0 0 24px;
+  text-wrap: balance;
+}
+.hero-sub {
+  max-width: 640px;
+  margin: 0 auto 32px;
+  color: var(--gray-text);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.prompt-card {
+  max-width: 640px;
+  margin: 0 auto;
+  background: #eeece8;
+  border-radius: 24px;
+  padding: 10px;
+}
+.prompt-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 6px 12px;
+  flex-wrap: wrap;
+}
+.pill-white, .pill-plain {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 999px;
+}
+.pill-white { background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+.pill-plain { color: var(--gray-text); font-weight: 500; }
+.prompt-body {
+  background: #fff;
+  border-radius: 18px;
+  padding: 16px 18px 12px;
+  text-align: left;
+}
+.prompt-body textarea {
+  width: 100%;
+  border: none;
+  resize: none;
+  font-size: 17px;
+  font-family: var(--sans);
+  color: var(--gray-text);
+  outline: none;
+  background: transparent;
+}
+.prompt-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.icon-btn {
+  border: none;
+  background: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--gray-text);
+}
+.icon-btn-submit {
+  background: #e5e3df;
+  color: #9ca3af;
+  border-radius: 999px;
+  width: 34px;
+  height: 34px;
+}
+
+.ph-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #fca5a5;
+  border-radius: 12px;
+  padding: 10px 18px;
+  margin-top: 32px;
+}
+.ph-medal { font-size: 22px; }
+.ph-eyebrow {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  color: #ef4444;
+}
+.ph-title { display: block; font-weight: 800; color: #ef4444; }
+.hero-note { color: var(--gray-text); font-size: 14px; margin-top: 12px; }
+
+/* Verticals */
+.verticals { padding: 56px 20px; max-width: 720px; margin: 0 auto; }
+.verticals-intro {
+  font-size: 22px;
+  line-height: 1.4;
+  color: #3f3f46;
+  margin-bottom: 32px;
+}
+.vertical-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.vertical-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--gray-border);
+  border-radius: 14px;
+  padding: 16px 20px;
+  font-size: 17px;
+  color: var(--gray-text);
+}
+.vertical-list strong { color: var(--ink); font-weight: 700; }
+.count { color: #a1a1aa; font-variant-numeric: tabular-nums; font-family: 'Courier New', monospace; }
+.and-more { color: #a1a1aa; margin-top: 16px; }
+
+/* Waterfalls */
+.waterfalls {
+  padding: 0 20px 64px;
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.waterfall-card {
+  border: 1px solid var(--gray-border);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.waterfall-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+  border-bottom: 1px solid var(--gray-border);
+}
+.waterfall-icon {
+  background: var(--pink-light);
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.waterfall-head h3 { margin: 0; font-size: 18px; flex: 1; }
+.provider-count { color: #a1a1aa; font-family: 'Courier New', monospace; font-size: 14px; }
+.provider-list { list-style: none; margin: 0; padding: 0; }
+.provider-list li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--gray-border);
+  font-weight: 600;
+}
+.provider-list li::before {
+  content: counter(list-item);
+  counter-increment: list-item;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--gray-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: var(--gray-text);
+  font-weight: 500;
+}
+.provider-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #fff;
+}
+.waterfall-note {
+  padding: 16px 20px 4px;
+  color: var(--gray-text);
+  font-size: 14px;
+  margin: 0;
+}
+.validated-pill {
+  display: inline-flex;
+  margin: 12px 20px 20px;
+  background: var(--pink-light);
+  color: var(--pink);
+  font-weight: 700;
+  font-size: 13px;
+  padding: 8px 14px;
+  border-radius: 999px;
+}
+
+/* Chat FAB */
+.chat-fab {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #4b5563;
+  color: #fff;
+  border: none;
+  font-size: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.2);
+  cursor: pointer;
+  z-index: 15;
+}
+
+@media (min-width: 860px) {
+  .hero h1 { font-size: 64px; }
+  .vertical-list { flex-direction: row; flex-wrap: wrap; }
+  .vertical-list li { flex: 1 1 calc(33% - 12px); }
+  .waterfalls { flex-direction: row; }
+}
+
+/* Product pages */
+.page-hero {
+  padding: 56px 20px 48px;
+  text-align: center;
+  background: var(--gray-bg);
+}
+.page-hero .eyebrow {
+  display: inline-block;
+  background: var(--pink-light);
+  color: var(--pink);
+  font-weight: 700;
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  margin-bottom: 20px;
+}
+.page-hero h1 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 42px;
+  line-height: 1.2;
+  margin: 0 0 20px;
+  text-wrap: balance;
+}
+.page-hero p {
+  max-width: 560px;
+  margin: 0 auto 28px;
+  color: var(--gray-text);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.feature-list {
+  list-style: none;
+  margin: 0 auto;
+  padding: 40px 20px 64px;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.feature-list li {
+  display: flex;
+  gap: 14px;
+  border: 1px solid var(--gray-border);
+  border-radius: 14px;
+  padding: 18px 20px;
+}
+.feature-list .feature-icon {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--pink-light);
+  color: var(--pink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+.feature-list h3 { margin: 0 0 4px; font-size: 16px; }
+.feature-list p { margin: 0; color: var(--gray-text); font-size: 14px; line-height: 1.5; }
+
+.page-cta {
+  text-align: center;
+  padding: 0 20px 64px;
+}
+
+.verticals-route .page-hero { padding-bottom: 0; }
+
+/* Sign in */
+.auth-wrap {
+  min-height: calc(100vh - 65px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: var(--gray-bg);
+}
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  border: 1px solid var(--gray-border);
+  border-radius: 20px;
+  padding: 32px 28px;
+}
+.auth-card h1 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 28px;
+  margin: 0 0 6px;
+  text-align: center;
+}
+.auth-card .auth-sub {
+  text-align: center;
+  color: var(--gray-text);
+  font-size: 14px;
+  margin: 0 0 28px;
+}
+.field { margin-bottom: 16px; }
+.field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.field input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--gray-border);
+  border-radius: 10px;
+  font-size: 15px;
+  font-family: var(--sans);
+}
+.field input:focus { outline: 2px solid var(--pink); outline-offset: 1px; }
+.auth-forgot {
+  display: block;
+  text-align: right;
+  font-size: 13px;
+  color: var(--gray-text);
+  margin: -8px 0 20px;
+}
+.auth-divider {
+  text-align: center;
+  color: var(--gray-text);
+  font-size: 14px;
+  margin-top: 20px;
+}
+.auth-divider a { color: var(--pink); font-weight: 600; }
+.auth-note {
+  text-align: center;
+  color: #a1a1aa;
+  font-size: 12px;
+  margin-top: 16px;
+}
+
+/* Router + preview chrome */
+.page[hidden] { display: none !important; }
+.page {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity .16s ease, transform .16s ease;
+}
+.page.is-leaving { opacity: 0; transform: translateY(6px); }
+.page.is-entering { opacity: 0; transform: translateY(6px); }
+@media (prefers-reduced-motion: reduce) {
+  .page { transition: none; }
+  html { scroll-behavior: auto; }
+}
+.preview-strip {
+  background: var(--ink);
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  padding: 6px 12px;
+  letter-spacing: .02em;
+}
+.preview-strip a { text-decoration: underline; }
+</style>
+
+<div class="preview-strip">Live preview of the jenworker clone &middot; built from screenshots, not the live origami.chat &middot; <a href="https://github.com/cryptogoddess1414-jenn/jenworker" target="_blank" rel="noopener">source on GitHub</a></div>
+
+<header class="site-header">
+  <a class="logo" href="#/home">
+    <svg class="logo-mark" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+      <path d="M12 2 L21 14 L12 22 L3 14 Z" fill="#ec4899"></path>
+      <path d="M12 2 L21 14 L12 14 Z" fill="#f472b6"></path>
+    </svg>
+    <span>Origami</span>
+  </a>
+  <div class="header-actions">
+    <a class="btn btn-black" href="#/start-free">Start Free <span aria-hidden="true">&rarr;</span></a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobileNav" hidden>
+  <div class="mobile-nav-header">
+    <a class="logo" href="#/home">
+      <svg class="logo-mark" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+        <path d="M12 2 L21 14 L12 22 L3 14 Z" fill="#ec4899"></path>
+        <path d="M12 2 L21 14 L12 14 Z" fill="#f472b6"></path>
+      </svg>
+      <span>Origami</span>
+    </a>
+    <a class="btn btn-black" href="#/start-free">Start Free <span aria-hidden="true">&rarr;</span></a>
+    <button class="menu-toggle" id="menuClose" aria-label="Close menu">&times;</button>
+  </div>
+
+  <p class="nav-section-label">Product</p>
+  <ul class="nav-list">
+    <li><a href="#/lead-generation">Lead Generation</a></li>
+    <li><a href="#/more/data-enrichment">Data Enrichment</a></li>
+    <li><a href="#/web-scraping">Web Scraping</a></li>
+    <li><a href="#/more/send">Send <span class="badge badge-pink">NEW</span></a></li>
+  </ul>
+
+  <ul class="nav-list nav-list-plain">
+    <li><a href="#/verticals">Verticals</a></li>
+    <li><a href="#/more/api-docs">API Docs <span class="badge badge-blue">Beta</span></a></li>
+    <li><a href="#/more/partners">Partners</a></li>
+    <li><a href="#/more/guide">Guide</a></li>
+    <li><a href="#/more/book-a-demo">Book a Demo</a></li>
+  </ul>
+
+  <div class="mobile-nav-cta">
+    <a class="btn btn-outline" href="#/sign-in">Sign In</a>
+    <a class="btn btn-black btn-block" href="#/start-free">Start Free</a>
+  </div>
+</nav>
+
+<main>
+
+<section class="page" id="page-home">
+  <div class="hero">
+    <h1>Find your perfect<br>customers.</h1>
+    <p class="hero-sub">
+      Find and connect with leads you can&rsquo;t find in Apollo, ZoomInfo, or Clay.
+      Describe your perfect lead, then have our AI scour the web and reach out for you.
+    </p>
+
+    <div class="prompt-card">
+      <div class="prompt-toolbar">
+        <span class="pill-white"><span class="icon">&#128172;</span> Enter a customer profile</span>
+        <span class="pill-plain"><span class="icon">&#127760;</span> Use my domain</span>
+        <span class="badge badge-pink">AUTO</span>
+      </div>
+      <div class="prompt-body">
+        <textarea placeholder="Find personal financial advisor" rows="3"></textarea>
+        <div class="prompt-footer">
+          <button class="icon-btn" aria-label="Attach">&#128206;</button>
+          <button class="icon-btn icon-btn-submit" aria-label="Submit">&uarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <a class="ph-badge" href="#/more/product-hunt">
+      <span class="ph-medal">&#127942;</span>
+      <span>
+        <span class="ph-eyebrow">PRODUCT HUNT</span>
+        <span class="ph-title">#1 Product of the Day</span>
+      </span>
+    </a>
+    <p class="hero-note">Try it free - no credit card required</p>
+  </div>
+
+  <div class="verticals">
+    <p class="verticals-intro">
+      If you can describe the customer, we can find them.
+      Infinite depth across every industry, niche, and buyer profile.
+    </p>
+    <ul class="vertical-list">
+      <li><span>Targeting <strong>Healthcare</strong></span><span class="count">41</span></li>
+      <li><span>Targeting <strong>Fintech</strong></span><span class="count">10</span></li>
+      <li><span>Targeting <strong>E-commerce</strong></span><span class="count">20</span></li>
+      <li><span>Targeting <strong>Biotech</strong></span><span class="count">17</span></li>
+      <li><span>Targeting <strong>Proptech</strong></span><span class="count">14</span></li>
+      <li><span>Targeting <strong>Hospitality</strong></span><span class="count">17</span></li>
+      <li><span>Targeting <strong>Logistics &amp; Supply Chain</strong></span><span class="count">18</span></li>
+      <li><span>Targeting <strong>Manufacturing</strong></span><span class="count">9</span></li>
+      <li><span>Targeting <strong>Nonprofit &amp; Social Impact</strong></span><span class="count">12</span></li>
+    </ul>
+    <p class="and-more">and more</p>
+  </div>
+
+  <div class="waterfalls">
+    <div class="waterfall-card">
+      <div class="waterfall-head">
+        <span class="waterfall-icon">&#9993;&#65039;</span>
+        <h3>Email waterfall</h3>
+        <span class="provider-count">5 providers</span>
+      </div>
+      <ol class="provider-list" start="2">
+        <li><span class="provider-logo" style="background:#7c3aed">&#10022;</span> LeadMagic</li>
+        <li><span class="provider-logo" style="background:#4c1d95">&#128081;</span> Wiza</li>
+        <li><span class="provider-logo" style="background:#6366f1">&#128279;</span> People Data Labs</li>
+        <li><span class="provider-logo" style="background:#dc2626">&#128230;</span> Prospeo</li>
+      </ol>
+      <p class="waterfall-note">First verified result wins. We never deliver unvalidated addresses.</p>
+      <span class="validated-pill">&check; Zero-bounce validated</span>
+    </div>
+
+    <div class="waterfall-card">
+      <div class="waterfall-head">
+        <span class="waterfall-icon">&#128222;</span>
+        <h3>Phone waterfall</h3>
+        <span class="provider-count">9 providers</span>
+      </div>
+      <ol class="provider-list" start="4">
+        <li><span class="provider-logo" style="background:#4c1d95">&#128081;</span> Wiza</li>
+        <li><span class="provider-logo" style="background:#111827">&#10084;&#65039;</span> Findymail</li>
+        <li><span class="provider-logo" style="background:#eef2ff">&#129497;</span> Forager</li>
+        <li><span class="provider-logo" style="background:#dc2626">&#128230;</span> Prospeo</li>
+      </ol>
+      <p class="waterfall-note">Mobile and work numbers, validated in real time before delivery.</p>
+      <span class="validated-pill">&check; Real-time validated</span>
+    </div>
+  </div>
+</section>
+
+<section class="page" id="page-lead-generation" hidden>
+  <div class="page-hero">
+    <span class="eyebrow">Lead Generation</span>
+    <h1>Find leads that actually match.</h1>
+    <p>
+      Describe your ideal customer in plain English. Origami's AI searches
+      beyond Apollo, ZoomInfo, and Clay to surface leads other tools miss &mdash;
+      then verifies and delivers contact details automatically.
+    </p>
+    <a class="btn btn-black" href="#/start-free">Start Free <span aria-hidden="true">&rarr;</span></a>
+  </div>
+
+  <ul class="feature-list">
+    <li>
+      <span class="feature-icon">&#128172;</span>
+      <div>
+        <h3>Natural-language targeting</h3>
+        <p>No boolean filters or dropdown menus &mdash; just describe the customer profile you want.</p>
+      </div>
+    </li>
+    <li>
+      <span class="feature-icon">&#9989;</span>
+      <div>
+        <h3>Verified email + phone</h3>
+        <p>Every contact is run through provider waterfalls and validated before it reaches you.</p>
+      </div>
+    </li>
+    <li>
+      <span class="feature-icon">&#128260;</span>
+      <div>
+        <h3>Continuous discovery</h3>
+        <p>Origami keeps searching after the first pull, not a one-time static list.</p>
+      </div>
+    </li>
+    <li>
+      <span class="feature-icon">&#128229;</span>
+      <div>
+        <h3>Export anywhere</h3>
+        <p>Push results straight to your CRM or outreach tool, or pull via the API.</p>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<section class="page" id="page-web-scraping" hidden>
+  <div class="page-hero">
+    <span class="eyebrow">Web Scraping</span>
+    <h1>Point it anywhere on the web.</h1>
+    <p>
+      Company sites, directories, job boards &mdash; describe what you're looking
+      for and let Origami's AI extract structured lead data in minutes.
+      No selectors to write, no scrapers to maintain.
+    </p>
+    <a class="btn btn-black" href="#/start-free">Start Free <span aria-hidden="true">&rarr;</span></a>
+  </div>
+
+  <ul class="feature-list">
+    <li>
+      <span class="feature-icon">&#129302;</span>
+      <div>
+        <h3>AI-guided extraction</h3>
+        <p>Describe the data you want in plain English instead of writing CSS selectors or XPath.</p>
+      </div>
+    </li>
+    <li>
+      <span class="feature-icon">&#9889;</span>
+      <div>
+        <h3>Handles JS-rendered pages</h3>
+        <p>Dynamic content, infinite scroll, and pagination are handled automatically.</p>
+      </div>
+    </li>
+    <li>
+      <span class="feature-icon">&#128202;</span>
+      <div>
+        <h3>Clean, structured output</h3>
+        <p>Get results as CSV or JSON, ready to drop straight into your CRM.</p>
+      </div>
+    </li>
+    <li>
+      <span class="feature-icon">&#8986;</span>
+      <div>
+        <h3>Run it on a schedule</h3>
+        <p>Re-run any scrape automatically to catch new listings as they appear.</p>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<section class="page" id="page-verticals" hidden>
+  <div class="page-hero">
+    <span class="eyebrow">Verticals</span>
+    <h1>Every industry, infinite depth.</h1>
+    <p>
+      If you can describe the customer, we can find them &mdash; across every
+      industry, niche, and buyer profile. Numbers below are curated source
+      counts per vertical.
+    </p>
+  </div>
+
+  <div class="verticals">
+    <ul class="vertical-list">
+      <li><span>Targeting <strong>Healthcare</strong></span><span class="count">41</span></li>
+      <li><span>Targeting <strong>Fintech</strong></span><span class="count">10</span></li>
+      <li><span>Targeting <strong>E-commerce</strong></span><span class="count">20</span></li>
+      <li><span>Targeting <strong>Biotech</strong></span><span class="count">17</span></li>
+      <li><span>Targeting <strong>Proptech</strong></span><span class="count">14</span></li>
+      <li><span>Targeting <strong>Hospitality</strong></span><span class="count">17</span></li>
+      <li><span>Targeting <strong>Logistics &amp; Supply Chain</strong></span><span class="count">18</span></li>
+      <li><span>Targeting <strong>Manufacturing</strong></span><span class="count">9</span></li>
+      <li><span>Targeting <strong>Nonprofit &amp; Social Impact</strong></span><span class="count">12</span></li>
+    </ul>
+    <p class="and-more">and more</p>
+  </div>
+
+  <div class="page-cta">
+    <a class="btn btn-black" href="#/start-free">Start Free <span aria-hidden="true">&rarr;</span></a>
+  </div>
+</section>
+
+<section class="page" id="page-sign-in" hidden>
+  <div class="auth-wrap">
+    <form class="auth-card" id="signInForm">
+      <h1>Sign in to Origami</h1>
+      <p class="auth-sub">Welcome back.</p>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="you@company.com" autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" autocomplete="current-password">
+      </div>
+      <a class="auth-forgot" href="#/more/forgot-password">Forgot password?</a>
+
+      <button class="btn btn-black btn-block" type="submit">Sign In</button>
+      <p class="auth-divider">New here? <a href="#/start-free">Start Free</a></p>
+      <p class="auth-note">Preview only &mdash; this form doesn't submit anywhere.</p>
+    </form>
+  </div>
+</section>
+
+<section class="page" id="page-start-free" hidden>
+  <div class="auth-wrap">
+    <form class="auth-card" id="startFreeForm">
+      <h1>Create your account</h1>
+      <p class="auth-sub">Try it free &mdash; no credit card required.</p>
+
+      <div class="field">
+        <label for="sf-name">Name</label>
+        <input id="sf-name" type="text" placeholder="Jane Doe" autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="sf-email">Email</label>
+        <input id="sf-email" type="email" placeholder="you@company.com" autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="sf-password">Password</label>
+        <input id="sf-password" type="password" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" autocomplete="new-password">
+      </div>
+
+      <button class="btn btn-black btn-block" type="submit">Start Free</button>
+      <p class="auth-divider">Already have an account? <a href="#/sign-in">Sign In</a></p>
+      <p class="auth-note">Preview only &mdash; this form doesn't submit anywhere.</p>
+    </form>
+  </div>
+</section>
+
+<section class="page" id="page-more" hidden>
+  <div class="page-hero">
+    <span class="eyebrow">Preview</span>
+    <h1 id="moreHeading">This section isn&rsquo;t in the preview</h1>
+    <p id="moreBody">This part of Origami wasn&rsquo;t in the screenshots I scraped, so there&rsquo;s nothing to show here yet.</p>
+    <a class="btn btn-black" href="#/home">Back to home</a>
+  </div>
+</section>
+
+</main>
+
+<button class="chat-fab" id="chatFab" aria-label="Open chat">&#128172;</button>
+
+<script>
+(function () {
+  var menuToggle = document.getElementById('menuToggle');
+  var menuClose = document.getElementById('menuClose');
+  var mobileNav = document.getElementById('mobileNav');
+  var chatFab = document.getElementById('chatFab');
+  var routes = ['home', 'lead-generation', 'web-scraping', 'verticals', 'sign-in', 'start-free', 'more'];
+  var authRoutes = ['sign-in', 'start-free'];
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var moreContent = {
+    'data-enrichment': "This part of Origami wasn't in the screenshots I scraped, so there's nothing to show here yet.",
+    'send': "This part of Origami wasn't in the screenshots I scraped, so there's nothing to show here yet.",
+    'api-docs': "This part of Origami wasn't in the screenshots I scraped, so there's nothing to show here yet.",
+    'partners': "This part of Origami wasn't in the screenshots I scraped, so there's nothing to show here yet.",
+    'guide': "This part of Origami wasn't in the screenshots I scraped, so there's nothing to show here yet.",
+    'book-a-demo': "This part of Origami wasn't in the screenshots I scraped, so there's nothing to show here yet.",
+    'product-hunt': 'On the live site this badge links out to the Product Hunt listing.',
+    'forgot-password': "Password recovery isn't wired up in this preview."
+  };
+  var moreLabels = {
+    'data-enrichment': 'Data Enrichment',
+    'send': 'Send',
+    'api-docs': 'API Docs',
+    'partners': 'Partners',
+    'guide': 'Guide',
+    'book-a-demo': 'Book a Demo',
+    'product-hunt': 'Product Hunt',
+    'forgot-password': 'Forgot Password'
+  };
+  var moreHeading = document.getElementById('moreHeading');
+  var moreBody = document.getElementById('moreBody');
+
+  function openNav() {
+    mobileNav.hidden = false;
+    menuToggle.setAttribute('aria-expanded', 'true');
+  }
+  function closeNav() {
+    mobileNav.hidden = true;
+    menuToggle.setAttribute('aria-expanded', 'false');
+  }
+  menuToggle.addEventListener('click', openNav);
+  menuClose.addEventListener('click', closeNav);
+
+  function showSection(section) {
+    section.hidden = false;
+    section.classList.add('is-entering');
+    section.getBoundingClientRect();
+    requestAnimationFrame(function () {
+      section.classList.remove('is-entering');
+    });
+  }
+
+  function applyRoute() {
+    var raw = location.hash.replace(/^#\/?/, '');
+    var route = 'home';
+    var slug = null;
+    if (raw === 'start-free' || raw === 'sign-in') {
+      route = raw;
+    } else if (raw.indexOf('more/') === 0) {
+      route = 'more';
+      slug = raw.slice(5);
+    } else if (routes.indexOf(raw) !== -1) {
+      route = raw;
+    }
+
+    if (route === 'more') {
+      var label = moreLabels[slug] || 'This section';
+      moreHeading.textContent = label;
+      moreBody.textContent = moreContent[slug] || "This part of Origami wasn't in the screenshots I scraped, so there's nothing to show here yet.";
+    }
+
+    var current = document.querySelector('.page:not([hidden])');
+    var next = document.getElementById('page-' + route);
+
+    document.body.classList.toggle('verticals-route', route === 'verticals');
+    chatFab.hidden = authRoutes.indexOf(route) !== -1;
+    closeNav();
+
+    if (current === next) return;
+
+    if (current && !reduceMotion) {
+      current.classList.add('is-leaving');
+      window.setTimeout(function () {
+        current.hidden = true;
+        current.classList.remove('is-leaving');
+      }, 160);
+      window.setTimeout(function () {
+        showSection(next);
+      }, 160);
+    } else {
+      if (current) current.hidden = true;
+      next.hidden = false;
+    }
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+  }
+  window.addEventListener('hashchange', applyRoute);
+  applyRoute();
+
+  document.getElementById('signInForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+  });
+  document.getElementById('startFreeForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+  });
+})();
+</script>

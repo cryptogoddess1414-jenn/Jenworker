@@ -19,15 +19,20 @@ this reproduces the visible content and layout faithfully but is not a
 byte-for-byte mirror — some off-screen content (assets, exact fonts/colors,
 JS behavior, other pages) isn't captured.
 
+## Pages
+
+- `index.html` — home (hero, verticals, provider waterfalls)
+- `lead-generation.html`, `web-scraping.html`, `verticals.html`, `sign-in.html` — product/auth pages, placeholder content inferred from the nav (no screenshots existed for these)
+- `style.css` — shared styling
+- `script.js` — mobile menu toggle
+
 ## Files
 
-- `index.html` — page markup
-- `style.css` — styling
-- `script.js` — mobile menu toggle
+- `preview.html` — a single self-contained version of the whole site, with all pages inlined and a hash-based router (`#/lead-generation`, `#/sign-in`, etc.) so it can run as one file with smooth page-to-page transitions. Every nav item and CTA is wired up, including a few not covered by any screenshot (e.g. Data Enrichment, API Docs), which route to a shared "not in this preview" page instead of dead-ending.
 
 ## Running locally
 
-Just open `index.html` in a browser, or serve the folder:
+Open `index.html` (multi-page version) or `preview.html` (single-file router version) directly in a browser, or serve the folder:
 
 ```
 npx serve .
