@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Origami | Find your perfect customers</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="logo" href="#">
+    <svg class="logo-mark" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+      <path d="M12 2 L21 14 L12 22 L3 14 Z" fill="#ec4899"/>
+      <path d="M12 2 L21 14 L12 14 Z" fill="#f472b6"/>
+    </svg>
+    <span>Origami</span>
+  </a>
+  <div class="header-actions">
+    <a class="btn btn-black" href="#">Start Free <span aria-hidden="true">&rarr;</span></a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobileNav" hidden>
+  <div class="mobile-nav-header">
+    <a class="logo" href="#">
+      <svg class="logo-mark" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+        <path d="M12 2 L21 14 L12 22 L3 14 Z" fill="#ec4899"/>
+        <path d="M12 2 L21 14 L12 14 Z" fill="#f472b6"/>
+      </svg>
+      <span>Origami</span>
+    </a>
+    <a class="btn btn-black" href="#">Start Free <span aria-hidden="true">&rarr;</span></a>
+    <button class="menu-toggle" id="menuClose" aria-label="Close menu">&times;</button>
+  </div>
+
+  <p class="nav-section-label">Product</p>
+  <ul class="nav-list">
+    <li><a href="#">Lead Generation</a></li>
+    <li><a href="#">Data Enrichment</a></li>
+    <li><a href="#">Web Scraping</a></li>
+    <li><a href="#">Send <span class="badge badge-pink">NEW</span></a></li>
+  </ul>
+
+  <ul class="nav-list nav-list-plain">
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#verticals">Verticals</a></li>
+    <li><a href="#">API Docs <span class="badge badge-blue">Beta</span></a></li>
+    <li><a href="#">Partners</a></li>
+    <li><a href="#">Guide</a></li>
+    <li><a href="#">Book a Demo</a></li>
+  </ul>
+
+  <div class="mobile-nav-cta">
+    <a class="btn btn-outline" href="#">Sign In</a>
+    <a class="btn btn-black btn-block" href="#">Start Free</a>
+  </div>
+</nav>
+
+<main>
+  <section class="hero">
+    <h1>Find your perfect<br>customers.</h1>
+    <p class="hero-sub">
+      Find and connect with leads you can&rsquo;t find in Apollo, ZoomInfo, or Clay.
+      Describe your perfect lead, then have our AI scour the web and reach out for you.
+    </p>
+
+    <div class="prompt-card">
+      <div class="prompt-toolbar">
+        <span class="pill pill-white"><span class="icon">&#128172;</span> Enter a customer profile</span>
+        <span class="pill-plain"><span class="icon">&#127760;</span> Use my domain</span>
+        <span class="badge badge-pink">AUTO</span>
+      </div>
+      <div class="prompt-body">
+        <textarea placeholder="Find personal financial advisor" rows="3"></textarea>
+        <div class="prompt-footer">
+          <button class="icon-btn" aria-label="Attach">&#128206;</button>
+          <button class="icon-btn icon-btn-submit" aria-label="Submit">&uarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <a class="ph-badge" href="#">
+      <span class="ph-medal">&#127942;</span>
+      <span>
+        <span class="ph-eyebrow">PRODUCT HUNT</span>
+        <span class="ph-title">#1 Product of the Day</span>
+      </span>
+    </a>
+    <p class="hero-note">Try it free - no credit card required</p>
+  </section>
+
+  <section class="verticals" id="verticals">
+    <p class="verticals-intro">
+      If you can describe the customer, we can find them.
+      Infinite depth across every industry, niche, and buyer profile.
+    </p>
+    <ul class="vertical-list">
+      <li><span>Targeting <strong>Healthcare</strong></span><span class="count">41</span></li>
+      <li><span>Targeting <strong>Fintech</strong></span><span class="count">10</span></li>
+      <li><span>Targeting <strong>E-commerce</strong></span><span class="count">20</span></li>
+      <li><span>Targeting <strong>Biotech</strong></span><span class="count">17</span></li>
+      <li><span>Targeting <strong>Proptech</strong></span><span class="count">14</span></li>
+      <li><span>Targeting <strong>Hospitality</strong></span><span class="count">17</span></li>
+      <li><span>Targeting <strong>Logistics &amp; Supply Chain</strong></span><span class="count">18</span></li>
+      <li><span>Targeting <strong>Manufacturing</strong></span><span class="count">9</span></li>
+      <li><span>Targeting <strong>Nonprofit &amp; Social Impact</strong></span><span class="count">12</span></li>
+    </ul>
+    <p class="and-more">and more</p>
+  </section>
+
+  <section class="waterfalls">
+    <div class="waterfall-card">
+      <div class="waterfall-head">
+        <span class="waterfall-icon">&#9993;&#65039;</span>
+        <h3>Email waterfall</h3>
+        <span class="provider-count">5 providers</span>
+      </div>
+      <ol class="provider-list" start="2">
+        <li><span class="provider-logo" style="background:#7c3aed">&#10022;</span> LeadMagic</li>
+        <li><span class="provider-logo" style="background:#4c1d95">&#128081;</span> Wiza</li>
+        <li><span class="provider-logo" style="background:#6366f1">&#128279;</span> People Data Labs</li>
+        <li><span class="provider-logo" style="background:#dc2626">&#128230;</span> Prospeo</li>
+      </ol>
+      <p class="waterfall-note">First verified result wins. We never deliver unvalidated addresses.</p>
+      <span class="validated-pill">&check; Zero-bounce validated</span>
+    </div>
+
+    <div class="waterfall-card">
+      <div class="waterfall-head">
+        <span class="waterfall-icon">&#128222;</span>
+        <h3>Phone waterfall</h3>
+        <span class="provider-count">9 providers</span>
+      </div>
+      <ol class="provider-list" start="4">
+        <li><span class="provider-logo" style="background:#4c1d95">&#128081;</span> Wiza</li>
+        <li><span class="provider-logo" style="background:#111827">&#10084;&#65039;</span> Findymail</li>
+        <li><span class="provider-logo" style="background:#eef2ff">&#129497;</span> Forager</li>
+        <li><span class="provider-logo" style="background:#dc2626">&#128230;</span> Prospeo</li>
+      </ol>
+      <p class="waterfall-note">Mobile and work numbers, validated in real time before delivery.</p>
+      <span class="validated-pill">&check; Real-time validated</span>
+    </div>
+  </section>
+</main>
+
+<button class="chat-fab" aria-label="Open chat">&#128172;</button>
+
+<script src="script.js"></script>
+</body>
+</html>
