@@ -1,0 +1,233 @@
+// src/components/HeroPrompt.tsx
+// Hero prompt + results + Start Free capture dialog, styled with your token system.
+// Uses shadcn/ui primitives — adjust imports if your paths differ.
+
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { ArrowUp, Loader2 } from "lucide-react";
+import {
+  fetchProspect,
+  submitLead,
+  type ProspectMode,
+  type ProspectResult,
+} from "@/lib/jenworker-api";
+
+export default function HeroPrompt() {
+  const [mode, setMode] = useState<ProspectMode>("profile");
+  const [prompt, setPrompt] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<ProspectResult | null>(null);
+  const [captureOpen, setCaptureOpen] = useState(false);
+
+  async function run() {
+    const p = prompt.trim();
+    if (!p) {
+      setError("Describe the lead you want to find first.");
+      return;
+    }
+    setError(null);
+    setResult(null);
+    setLoading(true);
+    try {
+      setResult(await fetchProspect(p, mode));
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <section className="container max-w-2xl py-16 text-center">
+      <h1 className="font-display text-5xl leading-tight sm:text-6xl">
+        Your next client is{" "}
+        <em className="italic text-brand">already out there.</em>
+      </h1>
+      <p className="mx-auto mt-5 max-w-xl text-muted-foreground">
+        Describe your ideal customer and Jenworker builds the targeting
+        profile, maps the search, and drafts the outreach.
+      </p>
+
+      {/* Mode toggle */}
+      <div className="mt-8 flex flex-wrap justify-center gap-2" role="group" aria-label="Input mode">
+        <Button
+          variant={mode === "profile" ? "default" : "secondary"}
+          className="rounded-full"
+          aria-pressed={mode === "profile"}
+          onClick={() => setMode("profile")}
+        >
+          Describe a customer
+        </Button>
+        <Button
+          variant={mode === "domain" ? "default" : "secondary"}
+          className="rounded-full"
+          aria-pressed={mode === "domain"}
+          onClick={() => setMode("domain")}
+        >
+          Use my domain
+          <span className="ml-2 text-[10px] font-bold tracking-widest text-brand">
+            AUTO
+          </span>
+        </Button>
+      </div>
+
+      {/* Prompt box */}
+      <div className="mt-4 rounded-2xl border bg-card p-4 text-left shadow-lg">
+        <Textarea
+          value={prompt}
+          onChange={(e) => setPrompt(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) run();
+          }}
+          placeholder={
+            mode === "domain"
+              ? "e.g. agenticbuilder.net — we'll infer your ideal customer"
+              : "e.g. Boutique real estate brokerages in NYC with 5–20 agents…"
+          }
+          className="min-h-24 resize-none border-0 bg-transparent text-base shadow-none focus-visible:ring-0"
+          aria-label="Describe your ideal customer"
+        />
+        <div className="flex justify-end">
+          <Button
+            size="icon"
+            onClick={run}
+            disabled={loading}
+            aria-label="Generate lead plan"
+          >
+            {loading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <ArrowUp className="h-4 w-4" />
+            )}
+          </Button>
+        </div>
+      </div>
+
+      {error && <p className="mt-4 text-sm text-destructive">{error}</p>}
+
+      {/* Result panel */}
+      {result && (
+        <div
+          className="mt-6 rounded-xl border bg-card p-6 text-left"
+          aria-live="polite"
+        >
+          <h3 className="font-display text-xl">{result.icp.title}</h3>
+          <dl className="mt-3 space-y-2 text-sm">
+            <div>
+              <dt className="inline font-semibold text-brand">Industries: </dt>
+              <dd className="inline">{result.icp.industries.join(", ")}</dd>
+            </div>
+            <div>
+              <dt className="inline font-semibold text-brand">Company size: </dt>
+              <dd className="inline">{result.icp.company_size}</dd>
+            </div>
+            <div>
+              <dt className="inline font-semibold text-brand">Buying signals: </dt>
+              <dd className="inline">{result.icp.signals.join("; ")}</dd>
+            </div>
+          </dl>
+          <p className="mt-4 text-sm font-semibold text-brand">Search plan</p>
+          <ol className="mt-1 list-decimal space-y-1 pl-5 text-sm">
+            {result.search_plan.map((s, i) => (
+              <li key={i}>{s}</li>
+            ))}
+          </ol>
+          <p className="mt-4 text-sm font-semibold text-brand">
+            Sample outreach — {result.sample_outreach.subject}
+          </p>
+          <p className="mt-1 whitespace-pre-line text-sm">
+            {result.sample_outreach.body}
+          </p>
+          <Button className="mt-5" onClick={() => setCaptureOpen(true)}>
+            Get these leads → Start free
+          </Button>
+        </div>
+      )}
+
+      <p className="mt-6 text-sm text-muted-foreground">
+        Try it free — no credit card required.
+      </p>
+
+      <StartFreeDialog
+        open={captureOpen}
+        onOpenChange={setCaptureOpen}
+        prompt={prompt}
+      />
+    </section>
+  );
+}
+
+// ---------------------------------------------------------------------------
+
+export function StartFreeDialog({
+  open,
+  onOpenChange,
+  prompt,
+  source = "jenworker-cta",
+}: {
+  open: boolean;
+  onOpenChange: (o: boolean) => void;
+  prompt?: string;
+  source?: string;
+}) {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<
+    { kind: "idle" } | { kind: "saving" } | { kind: "done" } | { kind: "error"; msg: string }
+  >({ kind: "idle" });
+
+  async function go() {
+    setStatus({ kind: "saving" });
+    try {
+      await submitLead({ email: email.trim(), source, prompt });
+      setStatus({ kind: "done" });
+      setTimeout(() => onOpenChange(false), 1500);
+    } catch (e) {
+      setStatus({
+        kind: "error",
+        msg: e instanceof Error ? e.message : "Couldn't save. Try again.",
+      });
+    }
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-sm">
+        <DialogHeader>
+          <DialogTitle className="font-display">Start free</DialogTitle>
+          <DialogDescription>
+            No credit card required. We'll send your first lead plan to your
+            inbox.
+          </DialogDescription>
+        </DialogHeader>
+        <Input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="you@company.com"
+          aria-label="Email address"
+        />
+        <Button onClick={go} disabled={status.kind === "saving"}>
+          {status.kind === "saving" ? "Saving…" : "Create my account"}
+        </Button>
+        {status.kind === "done" && (
+          <p className="text-sm text-muted-foreground">
+            You're in — check your inbox.
+          </p>
+        )}
+        {status.kind === "error" && (
+          <p className="text-sm text-destructive">{status.msg}</p>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}
