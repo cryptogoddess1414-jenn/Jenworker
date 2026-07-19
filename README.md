@@ -1,6 +1,14 @@
 # jenworker
 
-A static front-end clone of the [origami.chat](https://origami.chat) landing page.
+Jenworker's marketing/product site, originally cloned from
+[origami.chat](https://origami.chat) and rebranded: "Origami" → "Jenworker",
+pink accent → gold, matching the Agentic Builder brand family.
+
+The hero prompt composer, chat widget, and "Start Free" capture flow are
+wired to the live backend in
+[jenworker-backend](https://github.com/cryptogoddess1414-jenn/jenworker-backend)
+at `https://jenworker-api.up.railway.app` (`/api/prospect`, `/api/leads`,
+`/api/chat`).
 
 ## Provenance
 

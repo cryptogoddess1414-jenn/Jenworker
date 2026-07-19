@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Origami | Find your perfect customers</title>
+<title>Jenworker | Find your perfect customers</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,13 +11,13 @@
 <header class="site-header">
   <a class="logo" href="index.html">
     <svg class="logo-mark" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
-      <path d="M12 2 L21 14 L12 22 L3 14 Z" fill="#ec4899"/>
-      <path d="M12 2 L21 14 L12 14 Z" fill="#f472b6"/>
+      <path d="M12 2 L21 14 L12 22 L3 14 Z" fill="#c9a24b"/>
+      <path d="M12 2 L21 14 L12 14 Z" fill="#e8d9ae"/>
     </svg>
-    <span>Origami</span>
+    <span>Jenworker</span>
   </a>
   <div class="header-actions">
-    <a class="btn btn-black" href="#">Start Free <span aria-hidden="true">&rarr;</span></a>
+    <a class="btn btn-black cta" href="#">Start Free <span aria-hidden="true">&rarr;</span></a>
     <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -28,12 +28,12 @@
   <div class="mobile-nav-header">
     <a class="logo" href="index.html">
       <svg class="logo-mark" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
-        <path d="M12 2 L21 14 L12 22 L3 14 Z" fill="#ec4899"/>
-        <path d="M12 2 L21 14 L12 14 Z" fill="#f472b6"/>
+        <path d="M12 2 L21 14 L12 22 L3 14 Z" fill="#c9a24b"/>
+        <path d="M12 2 L21 14 L12 14 Z" fill="#e8d9ae"/>
       </svg>
-      <span>Origami</span>
+      <span>Jenworker</span>
     </a>
-    <a class="btn btn-black" href="#">Start Free <span aria-hidden="true">&rarr;</span></a>
+    <a class="btn btn-black cta" href="#">Start Free <span aria-hidden="true">&rarr;</span></a>
     <button class="menu-toggle" id="menuClose" aria-label="Close menu">&times;</button>
   </div>
 
@@ -56,7 +56,7 @@
 
   <div class="mobile-nav-cta">
     <a class="btn btn-outline" href="sign-in.html">Sign In</a>
-    <a class="btn btn-black btn-block" href="#">Start Free</a>
+    <a class="btn btn-black btn-block cta" href="#">Start Free</a>
   </div>
 </nav>
 
@@ -75,13 +75,15 @@
         <span class="badge badge-pink">AUTO</span>
       </div>
       <div class="prompt-body">
-        <textarea placeholder="Find personal financial advisor" rows="3"></textarea>
+        <textarea id="promptInput" placeholder="Find personal financial advisor" rows="3"></textarea>
         <div class="prompt-footer">
           <button class="icon-btn" aria-label="Attach">&#128206;</button>
-          <button class="icon-btn icon-btn-submit" aria-label="Submit">&uarr;</button>
+          <button class="icon-btn icon-btn-submit" id="promptSubmit" aria-label="Submit">&uarr;</button>
         </div>
       </div>
     </div>
+
+    <div id="result" aria-live="polite"></div>
 
     <a class="ph-badge" href="#">
       <span class="ph-medal">&#127942;</span>
